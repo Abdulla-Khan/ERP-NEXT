@@ -8,6 +8,7 @@ class AuthController extends GetxController {
   TextEditingController password = TextEditingController();
 
   login() async {
+    Map<String, String> headers = {};
     var request = http.Request(
         'GET',
         Uri.parse(
@@ -16,7 +17,14 @@ class AuthController extends GetxController {
     http.StreamedResponse response = await request.send();
 
     if (response.statusCode == 200) {
-      Get.offAll(() => HomeView());
+      String? rawCookie = response.headers['set-cookie'];
+      if (rawCookie != null) {
+        int index = rawCookie.indexOf(';');
+        headers['cookie'] =
+            (index == -1) ? rawCookie : rawCookie.substring(0, index);
+      }
+      // print();
+      Get.offAll(() => HomeView(), arguments: headers['cookie']);
     } else {
       print(response.reasonPhrase);
     }

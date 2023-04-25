@@ -9,17 +9,24 @@ class HomeController extends GetxController {
   TextEditingController itemCode = TextEditingController();
   TextEditingController itemGroup = TextEditingController();
   TextEditingController description = TextEditingController();
+  TextEditingController customerName = TextEditingController();
+  var a = Get.arguments;
+  @override
+  onInit() {
+    print(a);
+    super.onInit();
+  }
 
   sendCustomer() async {
     var headers = {
       'Content-Type': 'application/json',
       'Cookie':
-          'full_name=Administrator; sid=9fdd1915e7f159643407c73d0752cbe4c54f4d4d6f621e155e819281; system_user=yes; user_id=Administrator; user_image='
+          'full_name=Administrator; $a; system_user=yes; user_id=Administrator; user_image='
     };
     var request = http.Request(
         'POST', Uri.parse('http://demo.cubezix.com:85/api/resource/Customer'));
     request.body = json.encode({
-      "customer_name": "Ahmed Khan",
+      "customer_name": customerName.text,
       "customer_group": "Individual",
       "customer_type": "Company",
       "company": "Square Zix Digital Marketing",
@@ -30,26 +37,25 @@ class HomeController extends GetxController {
     http.StreamedResponse response = await request.send();
 
     if (response.statusCode == 200) {
-      print(await response.stream.bytesToString());
+      customerName.clear();
     } else {
       print(response.reasonPhrase);
     }
   }
 
   sendItem() async {
-    print('send');
     var headers = {
       'Content-Type': 'application/json',
       'Cookie':
-          'full_name=Administrator; sid=9fdd1915e7f159643407c73d0752cbe4c54f4d4d6f621e155e819281; system_user=yes; user_id=Administrator; user_image='
+          'full_name=Administrator; $a; system_user=yes; user_id=Administrator; user_image='
     };
     var request = http.Request(
         'POST', Uri.parse('http://demo.cubezix.com:85/api/resource/Item'));
     request.body = json.encode({
-      "item_name": "${itemName.text}",
-      "item_code": "${itemCode.text}",
+      "item_name": itemName.text,
+      "item_code": itemCode.text,
       "item_group": "All Item Groups",
-      "description": "${description.text}",
+      "description": description.text,
       "default_warehouse": "Stores - VAR",
       "is_stock_item": 1,
       "is_sales_item": 1,
@@ -61,13 +67,17 @@ class HomeController extends GetxController {
     http.StreamedResponse response = await request.send();
 
     if (response.statusCode == 200) {
-      print(await response.stream.bytesToString());
+      itemCode.clear();
+      itemName.clear();
+      description.clear();
     } else {
       print(response.reasonPhrase);
     }
   }
 }
-
+// Testing Item 001
+// Testing Item Code 001
+// Testing Item Description 001
 
 // Administrator
 // cubezix@2023

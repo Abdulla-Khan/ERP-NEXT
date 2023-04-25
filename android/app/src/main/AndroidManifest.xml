@@ -1,7 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.erp_next">
+     <uses-permission android:name="android.permission.INTERNET"/>
    <application
-        android:label="erp_next"
+        android:label="ERP NEXT"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
